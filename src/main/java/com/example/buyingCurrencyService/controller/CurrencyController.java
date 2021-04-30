@@ -2,31 +2,31 @@ package com.example.buyingCurrencyService.controller;
 
 import com.example.buyingCurrencyService.model.Account;
 import com.example.buyingCurrencyService.model.Currency;
-import com.example.buyingCurrencyService.service.CurrencyService;
+import com.example.buyingCurrencyService.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
 @RestController
-public class BuyingCurrencyController {
+public class CurrencyController {
 
     @Autowired
-    private CurrencyService currencyService;
+    private AccountService accountService;
 
-    @GetMapping("/accountInfo")
+    @GetMapping("/account")
     public Account getAccountInfo(Authentication authentication) {
-        return currencyService.getAccount(authentication.getName());
+        return accountService.getAccount(authentication.getName());
     }
 
-    @GetMapping("/accountInfo/{currencyName}")
+    @GetMapping("/account/{currencyName}")
     public Currency getParticularCurrency(@PathVariable String currencyName, Authentication authentication) {
-        return currencyService
+        return accountService
                 .getParticularUserCurrencyAndCheckIfCurrencyPresent(authentication.getName(), currencyName);
     }
 
-    @PutMapping("/accountInfo")
+    @PutMapping("/account")
     public Account updateAccount(@RequestBody Currency currency, Authentication authentication) {
-        return currencyService.topUpAnAccount(authentication.getName(), currency);
+        return accountService.updateAccount(authentication.getName(), currency);
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class BuyingCurrencyExceptionHandler {
+public class CurrencyExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorMessage> handleException(Exception exception) {

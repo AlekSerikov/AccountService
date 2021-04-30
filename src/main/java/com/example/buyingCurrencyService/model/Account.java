@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.Objects;
 
 @Document(collection = "currencyUsers")
 public class Account {
@@ -53,5 +54,18 @@ public class Account {
                 ", balance=" + balance +
                 ", wallet=" + currencies +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Double.compare(account.balance, balance) == 0 && Objects.equals(login, account.login) && Objects.equals(currencies, account.currencies);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(login, balance, currencies);
     }
 }

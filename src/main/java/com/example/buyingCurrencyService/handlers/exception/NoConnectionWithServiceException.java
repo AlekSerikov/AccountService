@@ -1,6 +1,6 @@
 package com.example.buyingCurrencyService.handlers.exception;
 
-public class NoConnectionWithServiceException extends RuntimeException{
+public class NoConnectionWithServiceException extends BuyingCurrencyServiceException{
 
     public NoConnectionWithServiceException() {
     }

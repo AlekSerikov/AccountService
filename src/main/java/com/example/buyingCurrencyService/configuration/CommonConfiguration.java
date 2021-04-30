@@ -28,4 +28,25 @@ public class CommonConfiguration {
                 .build());
     }
 
+//    @Bean
+//    public Customizer<Resilience4JCircuitBreakerFactory> defaultCustomizer() {
+//        CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.custom()
+//                .slidingWindowType(CircuitBreakerConfig.SlidingWindowType.COUNT_BASED)
+//                .slidingWindowSize(10)
+//                .minimumNumberOfCalls(10)
+//                .failureRateThreshold(25)
+//                .permittedNumberOfCallsInHalfOpenState(3)
+//                .build();
+//
+//        TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.custom()
+//                .timeoutDuration(Duration.ofSeconds(4))
+//                .build();
+//
+//        return factory ->
+//                factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
+//                        .circuitBreakerConfig(circuitBreakerConfig)
+//                        .timeLimiterConfig(timeLimiterConfig)
+//                        .build());
+//    }
+
 }
