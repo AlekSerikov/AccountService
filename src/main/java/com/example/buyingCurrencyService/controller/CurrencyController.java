@@ -1,6 +1,6 @@
 package com.example.buyingCurrencyService.controller;
 
-import com.example.buyingCurrencyService.model.Account;
+import com.example.buyingCurrencyService.model.entity.Account;
 import com.example.buyingCurrencyService.model.Currency;
 import com.example.buyingCurrencyService.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,9 @@ public class CurrencyController {
     }
 
     @GetMapping("/account/{currencyName}")
-    public Currency getParticularCurrency(@PathVariable String currencyName, Authentication authentication) {
+    public Account getParticularCurrency(@PathVariable String currencyName, Authentication authentication) {
         return accountService
-                .getParticularUserCurrencyAndCheckIfCurrencyPresent(authentication.getName(), currencyName);
+                .getAccountWithParticularCurrency(authentication.getName(), currencyName);
     }
 
     @PutMapping("/account")

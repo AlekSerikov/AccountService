@@ -2,3 +2,5 @@ server:
   port: 8097
 
 currencyRateServiceBasePartURL: http://localhost:8080/api/currency/
+
+circuitBreakerId: accountService

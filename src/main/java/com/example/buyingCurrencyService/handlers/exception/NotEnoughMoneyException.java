@@ -1,6 +1,6 @@
 package com.example.buyingCurrencyService.handlers.exception;
 
-public class NotEnoughMoneyException extends BuyingCurrencyServiceException{
+public class NotEnoughMoneyException extends AccountServiceException {
 
     private String message;
 

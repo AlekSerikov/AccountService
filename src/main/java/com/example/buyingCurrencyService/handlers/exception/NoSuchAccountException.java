@@ -1,6 +1,6 @@
 package com.example.buyingCurrencyService.handlers.exception;
 
-public class NoSuchAccountException extends BuyingCurrencyServiceException{
+public class NoSuchAccountException extends AccountServiceException {
 
     public NoSuchAccountException() {
     }

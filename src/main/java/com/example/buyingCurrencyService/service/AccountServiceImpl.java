@@ -6,15 +6,15 @@ import com.example.buyingCurrencyService.handlers.exception.NoSuchCurrencyInAcco
 import com.example.buyingCurrencyService.handlers.exception.NoSuchAccountException;
 import com.example.buyingCurrencyService.handlers.exception.NotEnoughMoneyException;
 import com.example.buyingCurrencyService.model.Currency;
-import com.example.buyingCurrencyService.model.Account;
+import com.example.buyingCurrencyService.model.entity.Account;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,51 +27,46 @@ public class AccountServiceImpl implements AccountService {
     private RestTemplate restTemplate;
 
     @Autowired
-    private CircuitBreakerFactory cbFactory;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
     @Value("${currencyRateServiceBasePartURL}")
     private String currencyRateServiceBasePartURL;
 
-    private final static String CIRCUIT_BREAKER_ID = "accountService";
+    @Autowired
+    private CircuitBreaker circuitBreaker;
 
 
     @Override
     public Account getAccount(String login) {
-
         Account account = accountRepository.findByLogin(login);
         if (account == null) throw new NoSuchAccountException();
         return account;
     }
 
-
     @Override
-    public Currency getParticularUserCurrencyAndCheckIfCurrencyPresent(String login, String currencyName) {
-        return getParticularCurrencyFromAccount(accountRepository.findByLogin(login), currencyName)
+    public Account getAccountWithParticularCurrency(String login, String currencyName) {
+        Account account = getAccount(login);
+        Currency particularCurrency = getParticularCurrencyFromAccount(getAccount(login), currencyName)
                 .orElseThrow(() -> new NoSuchCurrencyInAccountException("There is no currency with name " + currencyName));
+        return new Account(account.getLogin(), account.getBalance(), List.of(particularCurrency));
     }
 
     @Override
     public Account updateAccount(String userName, Currency currency) {
-        Account account = accountRepository.findByLogin(userName);
+        Account account = getAccount(userName);
         Currency costOfOneUnitOfCurrencyInBYN = getCostOfOneUnitOfCurrencyInBYN(currency.getName());
         double theCostOfBuyingCurrencyInRubles = currency.getValue() * costOfOneUnitOfCurrencyInBYN.getValue();
-
         checkBalance(theCostOfBuyingCurrencyInRubles, account);
-
         addCurrencyIfAbsentInAccount(account, currency.getName());
-
         Currency currencyToUpdate = getParticularCurrencyFromAccount(account, currency.getName()).get();
-        account.setBalance(account.getBalance() - theCostOfBuyingCurrencyInRubles);
+        account.getBalance().setValue(account.getBalance().getValue() - theCostOfBuyingCurrencyInRubles);
         currencyToUpdate.setValue(currencyToUpdate.getValue() + currency.getValue());
         return accountRepository.save(account);
     }
 
 
     private void checkBalance(double currencyCost, Account account) {
-        if (currencyCost > account.getBalance()) {
+        if (currencyCost > account.getBalance().getValue()) {
             throw new NotEnoughMoneyException();
         }
     }
@@ -84,9 +79,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private Currency getCostOfOneUnitOfCurrencyInBYN(String currencyName) {
-        CircuitBreaker accountServiceCb = cbFactory.create(CIRCUIT_BREAKER_ID);// вынести
         try {
-            return accountServiceCb.run(()
+            return circuitBreaker.run(()
                     -> restTemplate.getForObject(currencyRateServiceBasePartURL + currencyName, Currency.class));
         } catch (Exception e) {
             throw new NoConnectionWithServiceException("Internal server error");
