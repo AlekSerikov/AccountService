@@ -43,10 +43,7 @@ public class BuyingCurrencyServiceApplication implements CommandLineRunner {
 
         userRepository.deleteAll();
 
-        userRepository.save(new User("admin", "{noop}admin", Role.ADMIN, Status.ACTIVE));
-        userRepository.save(new User("user", "{noop}user", Role.USER, Status.ACTIVE));
-
-//        userRepository.save(new User("admin", "$2y$12$xTXPgQU5x/Q//l/HtSyiYedlMYzPiWTHWN5GLjt/TtvdoIK5TnFLG", Role.ADMIN, Status.ACTIVE));
-//        userRepository.save(new User("user", "$2y$12$iZczeJ8FohLQ3iYGgvetF.YRJtmAOoSA0BsUe9doyq4drsSxHtsE6", Role.USER, Status.ACTIVE));
+        userRepository.save(new User("admin", "$2y$12$xTXPgQU5x/Q//l/HtSyiYedlMYzPiWTHWN5GLjt/TtvdoIK5TnFLG", Role.ADMIN, Status.ACTIVE));
+        userRepository.save(new User("user", "$2y$12$iZczeJ8FohLQ3iYGgvetF.YRJtmAOoSA0BsUe9doyq4drsSxHtsE6", Role.USER, Status.ACTIVE));
     }
 }

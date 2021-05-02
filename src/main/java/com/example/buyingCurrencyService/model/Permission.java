@@ -1,9 +1,9 @@
 package com.example.buyingCurrencyService.model;
 
 public enum Permission {
-    GET_ALL_CURRENCY("currency:all"),
-    GET_PARTICULAR_CURRENCY("currency:particular"),
-    UPDATE_CURRENCY("currency:update");
+    GET_ACCOUNT_CURRENCIES("account:getCurrencies"),
+    GET_ACCOUNT_CURRENCY("account:getCurrency"),
+    UPDATE_ACCOUNT("update:updateAccount");
 
     private final String permission;
 

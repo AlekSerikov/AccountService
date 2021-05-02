@@ -1,8 +1,7 @@
 package com.example.buyingCurrencyService.configuration;
 
-import com.example.buyingCurrencyService.model.Role;
+import com.example.buyingCurrencyService.model.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,12 +10,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
@@ -31,8 +27,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
-                .antMatchers(HttpMethod.PUT, "/api/**").hasRole(Role.ADMIN.name())
+                .antMatchers(HttpMethod.GET, "/api/**")
+                .hasAnyAuthority(Permission.GET_ACCOUNT_CURRENCIES.getPermission(), Permission.GET_ACCOUNT_CURRENCY.getPermission())
+                .antMatchers(HttpMethod.PUT, "/api/**")
+                .hasAnyAuthority(Permission.UPDATE_ACCOUNT.getPermission())
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -26,9 +26,6 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Value("${currencyRateServiceBasePartURL}")
     private String currencyRateServiceBasePartURL;
 
@@ -46,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccountWithParticularCurrency(String login, String currencyName) {
         Account account = getAccount(login);
-        Currency particularCurrency = getParticularCurrencyFromAccount(getAccount(login), currencyName)
+        Currency particularCurrency = getParticularCurrencyFromAccount(account, currencyName)
                 .orElseThrow(() -> new NoSuchCurrencyInAccountException("There is no currency with name " + currencyName));
         return new Account(account.getLogin(), account.getBalance(), List.of(particularCurrency));
     }
