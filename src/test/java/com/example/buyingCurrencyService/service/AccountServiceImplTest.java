@@ -55,7 +55,7 @@ class AccountServiceImplTest {
     @Test
     void getAccount_success_test() {
         Account account = new Account("admin", new Currency("BYN", 1000.0),
-                Arrays.asList(new Currency("USD", 100.0)));
+                List.of(new Currency("USD", 100.0)));
 
         when(accountRepository.findByLogin(any())).thenReturn(account);
 
@@ -104,6 +104,7 @@ class AccountServiceImplTest {
                         new Currency("RUB", 10.0)
                 ));
         when(accountRepository.findByLogin(any())).thenReturn(account);
+
         Account accountWithParticularCurrency
                 = accountServiceImpl.getAccountWithParticularCurrency("admin", currencyName);
         verify(accountRepository).findByLogin("admin");

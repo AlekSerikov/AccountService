@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
 @RestController
-public class CurrencyController {
+public class AccountController {
 
     @Autowired
     private AccountService accountService;
 
     @GetMapping("/account")
-    public Account getAccountInfo(Authentication authentication) {
+    public Account getAccount(Authentication authentication) {
         return accountService.getAccount(authentication.getName());
     }
 
     @GetMapping("/account/{currencyName}")
-    public Account getParticularCurrency(@PathVariable String currencyName, Authentication authentication) {
+    public Account getAccountWithParticularCurrency(@PathVariable String currencyName, Authentication authentication) {
         return accountService
                 .getAccountWithParticularCurrency(authentication.getName(), currencyName);
     }
