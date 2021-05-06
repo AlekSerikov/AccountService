@@ -2,7 +2,6 @@ package com.example.buyingCurrencyService.model.entity;
 
 import com.example.buyingCurrencyService.model.Role;
 import com.example.buyingCurrencyService.model.Status;
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;

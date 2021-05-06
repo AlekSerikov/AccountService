@@ -7,7 +7,9 @@ import com.example.buyingCurrencyService.handlers.exception.NoSuchAccountExcepti
 import com.example.buyingCurrencyService.handlers.exception.NotEnoughMoneyException;
 import com.example.buyingCurrencyService.model.Currency;
 import com.example.buyingCurrencyService.model.entity.Account;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
@@ -18,20 +20,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@NoArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AccountServiceImpl implements AccountService {
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Value("${currencyRateServiceBasePartURL}")
     private String currencyRateServiceBasePartURL;
-
-    @Autowired
-    private CircuitBreaker circuitBreaker;
-
+    private @NonNull AccountRepository accountRepository;
+    private @NonNull RestTemplate restTemplate;
+    private @NonNull CircuitBreaker circuitBreaker;
 
     @Override
     public Account getAccount(String login) {
@@ -61,7 +58,6 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.save(account);
     }
 
-
     private void checkBalance(double currencyCost, Account account) {
         if (currencyCost > account.getBalance().getValue()) {
             throw new NotEnoughMoneyException();
@@ -80,6 +76,7 @@ public class AccountServiceImpl implements AccountService {
             return circuitBreaker.run(()
                     -> restTemplate.getForObject(currencyRateServiceBasePartURL + currencyName, Currency.class));
         } catch (Exception e) {
+            System.out.println(e.toString());
             throw new NoConnectionWithServiceException("Internal server error");
         }
     }

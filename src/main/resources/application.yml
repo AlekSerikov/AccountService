@@ -1,6 +1,19 @@
-server:
-  port: 8097
+#server:
+#  port: 8097
 
-currencyRateServiceBasePartURL: http://localhost:8080/api/currency/
+#currencyRateServiceBasePartURL: http://localhost:8080/api/currency/
+
+currencyRateServiceBasePartURL: http://currency-rate-exchanger:8083/api/currency/
+
+#server:
+#  port: 8083
+
+#for deploy to docker
+spring:
+  data:
+    mongodb:
+      database: accountsDB
+      host: mongo
+      port: 27017
 
 circuitBreakerId: accountService
