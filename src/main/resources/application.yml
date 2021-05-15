@@ -8,13 +8,13 @@
 currencyRateServiceBasePartURL: http://test-1557239685.us-east-2.elb.amazonaws.com:8001/api/currency/
 
 server:
-  port: 8009
+  port: 8000
 
 amazon:
   aws:
     region : us-east-2
     accesskey: AKIARMAYTBEWYDEVR3CY
-    secretkey:
+    secretkey: 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
   dynamodb:
     endpoint: dynamodb.us-east-2.amazonaws.com
 
