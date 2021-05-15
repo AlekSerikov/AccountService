@@ -1,6 +1,6 @@
 package com.example.buyingCurrencyService.service;
 
-import com.example.buyingCurrencyService.dao.AccountRepository;
+import com.example.buyingCurrencyService.dao.AccountDaoImpl;
 import com.example.buyingCurrencyService.handlers.exception.NoConnectionWithServiceException;
 import com.example.buyingCurrencyService.handlers.exception.NoSuchCurrencyInAccountException;
 import com.example.buyingCurrencyService.handlers.exception.NoSuchAccountException;
@@ -26,13 +26,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Value("${currencyRateServiceBasePartURL}")
     private String currencyRateServiceBasePartURL;
-    private @NonNull AccountRepository accountRepository;
+
+
+    private @NonNull AccountDaoImpl accountDao;
     private @NonNull RestTemplate restTemplate;
     private @NonNull CircuitBreaker circuitBreaker;
 
     @Override
     public Account getAccount(String login) {
-        Account account = accountRepository.findByLogin(login);
+        Account account = accountDao.getAccount(login); //======
         if (account == null) throw new NoSuchAccountException();
         return account;
     }
@@ -55,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
         Currency currencyToUpdate = getParticularCurrencyFromAccount(account, currency.getName()).get();
         account.getBalance().setValue(account.getBalance().getValue() - theCostOfBuyingCurrencyInRubles);
         currencyToUpdate.setValue(currencyToUpdate.getValue() + currency.getValue());
-        return accountRepository.save(account);
+        return accountDao.updateAccount(account);
     }
 
     private void checkBalance(double currencyCost, Account account) {
@@ -67,7 +69,7 @@ public class AccountServiceImpl implements AccountService {
     private void addCurrencyIfAbsentInAccount(Account account, String currencyName) {
         if (isCurrencyPresentsInAccount(account, currencyName)) {
             account.getCurrencies().add(new Currency(currencyName, 0.0));
-            accountRepository.save(account);
+            accountDao.addAccount(account);
         }
     }
 

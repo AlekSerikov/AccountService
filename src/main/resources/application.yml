@@ -3,33 +3,43 @@
 
 #currencyRateServiceBasePartURL: http://localhost:8080/api/currency/
 
-#currencyRateServiceBasePartURL: http://currency-rate-exchanger:8083/api/currency/
+#currencyRateServiceBasePartURL: http://18.116.63.159:8001/api/currency/
 
-#server:
-#  port: 8083
+currencyRateServiceBasePartURL: http://test-1557239685.us-east-2.elb.amazonaws.com:8001/api/currency/
+
+server:
+  port: 8009
+
+amazon:
+  aws:
+    region : us-east-2
+    accesskey: AKIARMAYTBEWYDEVR3CY
+    secretkey:
+  dynamodb:
+    endpoint: dynamodb.us-east-2.amazonaws.com
 
 #for deploy to docker
 #spring:
 #  data:
 #    mongodb:
 #      database: accountsDB
-#      host: mongo
+#      host: localhost       mongo
 #      port: 27017
 
 #for AWS
 
 #currencyRateServiceBasePartURL: http://3.141.244.83:8001/api/currency/
 
-currencyRateServiceBasePartURL: http://test-1557239685.us-east-2.elb.amazonaws.com:8001/api/currency/
-
-server:
-  port: 8000
-
-spring:
-  data:
-    mongodb:
-      database: accountsDB
-      host: 10.0.11.172
-      port: 27017
+#currencyRateServiceBasePartURL: http://test-1557239685.us-east-2.elb.amazonaws.com:8001/api/currency/
+#
+#server:
+#  port: 8000
+#
+#spring:
+#  data:
+#    mongodb:
+#      database: accountsDB
+#      host: 10.0.11.172
+#      port: 27017
 
 circuitBreakerId: accountService

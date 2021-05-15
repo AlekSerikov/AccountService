@@ -1,5 +1,11 @@
 package com.example.buyingCurrencyService.configuration;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +27,30 @@ public class CommonConfiguration {
     @Value("circuitBreakerId")
     private String circuitBreakerId;
 
+    @Value("${amazon.dynamodb.endpoint}")
+    private String amazonDynamoDBEndpoint;
+
+    @Value("${amazon.aws.accesskey}")
+    private String amazonAwsAccessKey;
+
+    @Value("${amazon.aws.secretkey}")
+    private String amazonAwsSecretKey;
+
+    @Value("${amazon.aws.region}")
+    private String amazonAwsRegion;
+
+    @Bean
+    public DynamoDBMapper mapper() {
+        return new DynamoDBMapper(amazonDynamoDBConfig());
+    }
+
+
+    private AmazonDynamoDB amazonDynamoDBConfig() {
+        return AmazonDynamoDBClientBuilder.standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(amazonDynamoDBEndpoint, amazonAwsRegion))
+                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(amazonAwsAccessKey, amazonAwsSecretKey))).build();
+    }
+
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
@@ -35,7 +65,7 @@ public class CommonConfiguration {
     }
 
     @Bean
-    public CircuitBreaker circuitBreaker (CircuitBreakerFactory cbFactory){
+    public CircuitBreaker circuitBreaker(CircuitBreakerFactory cbFactory) {
         return cbFactory.create(circuitBreakerId);
     }
 }
