@@ -1,0 +1,11 @@
+[ {
+  "login" : "admin",
+  "password" : "$2y$12$xTXPgQU5x/Q//l/HtSyiYedlMYzPiWTHWN5GLjt/TtvdoIK5TnFLG",
+  "role" : "ADMIN",
+  "status" : "ACTIVE"
+}, {
+  "login" : "user",
+  "password" : "$2y$12$iZczeJ8FohLQ3iYGgvetF.YRJtmAOoSA0BsUe9doyq4drsSxHtsE6",
+  "role" : "USER",
+  "status" : "ACTIVE"
+} ]

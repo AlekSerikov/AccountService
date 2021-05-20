@@ -1,12 +1,12 @@
 package com.example.buyingCurrencyService.service;
 
-import com.example.buyingCurrencyService.dao.AccountDaoImpl;
 import com.example.buyingCurrencyService.handlers.exception.NoConnectionWithServiceException;
 import com.example.buyingCurrencyService.handlers.exception.NoSuchCurrencyInAccountException;
 import com.example.buyingCurrencyService.handlers.exception.NoSuchAccountException;
 import com.example.buyingCurrencyService.handlers.exception.NotEnoughMoneyException;
 import com.example.buyingCurrencyService.model.Currency;
 import com.example.buyingCurrencyService.model.entity.Account;
+import com.example.buyingCurrencyService.repo.AccountRepository;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +28,13 @@ public class AccountServiceImpl implements AccountService {
     private String currencyRateServiceBasePartURL;
 
 
-    private @NonNull AccountDaoImpl accountDao;
+    private @NonNull AccountRepository accountRepository;
     private @NonNull RestTemplate restTemplate;
     private @NonNull CircuitBreaker circuitBreaker;
 
     @Override
     public Account getAccount(String login) {
-        Account account = accountDao.getAccount(login); //======
+        Account account = accountRepository.findByLogin(login); //======
         if (account == null) throw new NoSuchAccountException();
         return account;
     }
@@ -57,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
         Currency currencyToUpdate = getParticularCurrencyFromAccount(account, currency.getName()).get();
         account.getBalance().setValue(account.getBalance().getValue() - theCostOfBuyingCurrencyInRubles);
         currencyToUpdate.setValue(currencyToUpdate.getValue() + currency.getValue());
-        return accountDao.updateAccount(account);
+        return accountRepository.save(account);
     }
 
     private void checkBalance(double currencyCost, Account account) {
@@ -69,7 +69,7 @@ public class AccountServiceImpl implements AccountService {
     private void addCurrencyIfAbsentInAccount(Account account, String currencyName) {
         if (isCurrencyPresentsInAccount(account, currencyName)) {
             account.getCurrencies().add(new Currency(currencyName, 0.0));
-            accountDao.addAccount(account);
+            accountRepository.save(account);
         }
     }
 

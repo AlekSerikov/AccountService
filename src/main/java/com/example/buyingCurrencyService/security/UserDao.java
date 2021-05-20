@@ -1,4 +1,4 @@
-package com.example.buyingCurrencyService.dao;
+package com.example.buyingCurrencyService.security;
 
 import com.example.buyingCurrencyService.model.entity.User;
 
@@ -6,7 +6,6 @@ import java.util.Optional;
 
 public interface UserDao {
 
-    Optional<User> getUser(String id);
+    Optional<User> getUserByLogin(String login);
 
-    void addUser(User user);
 }

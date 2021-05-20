@@ -1,6 +1,5 @@
 package com.example.buyingCurrencyService.security;
 
-import com.example.buyingCurrencyService.dao.UserDaoImpl;
 import com.example.buyingCurrencyService.handlers.exception.NoSuchUserException;
 import com.example.buyingCurrencyService.model.Status;
 import com.example.buyingCurrencyService.model.entity.User;
@@ -16,12 +15,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private @NonNull UserDaoImpl userDaoImpl;
+//    @Autowired
+//    private @NonNull UserRepository userRepository;
+
+    private @NonNull UserService userServiceImpl;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = userDaoImpl.getUser(userName)
+        User user = userServiceImpl.getUserByLogin(userName)
                 .orElseThrow(() -> new NoSuchUserException("User does not exists"));
 
         return new org.springframework.security.core.userdetails.User(
