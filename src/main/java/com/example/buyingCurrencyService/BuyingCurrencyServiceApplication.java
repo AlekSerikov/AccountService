@@ -1,9 +1,11 @@
 package com.example.buyingCurrencyService;
 
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.example.buyingCurrencyService.model.entity.User;
 import com.example.buyingCurrencyService.repo.AccountRepository;
 import com.example.buyingCurrencyService.repo.UserRepository;
+import com.example.buyingCurrencyService.security.UserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,13 @@ public class BuyingCurrencyServiceApplication implements CommandLineRunner {
     private AccountRepository accountRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private AmazonS3 amazonS3;
+
+    @Autowired
+    private UserService userService;
 
 
     public static void main(String[] args) {
@@ -33,6 +41,11 @@ public class BuyingCurrencyServiceApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+//        System.out.println(amazonS3.listBuckets());
+//
+//        System.out.println(userService.getUserByLogin("admin"));
+
 
 //        accountDao.addAccount(new Account("admin", new Currency("BYN", 1000.0), List.of(
 //                new Currency("USD", 0),

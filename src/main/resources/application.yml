@@ -13,7 +13,7 @@ server:
 amazon:
   aws:
     region : us-east-2
-    accesskey: AKIARMAYTBEWYDEVR3CY
+    accesskey:
     secretkey:
   dynamodb:
     endpoint: dynamodb.us-east-2.amazonaws.com

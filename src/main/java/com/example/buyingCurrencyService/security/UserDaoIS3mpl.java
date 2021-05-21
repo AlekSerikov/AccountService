@@ -29,7 +29,6 @@ public class UserDaoIS3mpl implements UserDao{
 
         S3Object s3object = amazonS3BucketClient.getObject("my-first-bucket-a", "users.json");
         try (S3ObjectInputStream inputStream = s3object.getObjectContent()) {
-            System.out.println("!!!!!!!!s3");
            List<User> users = objectMapper.readValue(inputStream, new TypeReference<>(){});
 
            return users.stream().filter(u -> u.getLogin().equalsIgnoreCase(login)).findAny();
