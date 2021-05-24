@@ -2,37 +2,22 @@ package com.example.buyingCurrencyService;
 
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.example.buyingCurrencyService.model.entity.User;
 import com.example.buyingCurrencyService.repo.AccountRepository;
-import com.example.buyingCurrencyService.repo.UserRepository;
-import com.example.buyingCurrencyService.security.UserService;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.List;
-
 
 @SpringBootApplication
 public class BuyingCurrencyServiceApplication implements CommandLineRunner {
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private AccountRepository accountRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private AmazonS3 amazonS3;
-
-    @Autowired
-    private UserService userService;
 
 
     public static void main(String[] args) {
@@ -60,12 +45,7 @@ public class BuyingCurrencyServiceApplication implements CommandLineRunner {
 //        System.out.println(userRepository.findByLogin("admin"));
 
 
-        String string = objectMapper.writeValueAsString(userRepository.findAll());
-        System.out.println(string);
-
-        String users = "[{\"login\":\"admin\",\"password\":\"$2y$12$xTXPgQU5x/Q//l/HtSyiYedlMYzPiWTHWN5GLjt/TtvdoIK5TnFLG\",\"role\":\"ADMIN\",\"status\":\"ACTIVE\"},{\"login\":\"user\",\"password\":\"$2y$12$iZczeJ8FohLQ3iYGgvetF.YRJtmAOoSA0BsUe9doyq4drsSxHtsE6\",\"role\":\"USER\",\"status\":\"ACTIVE\"}]";
-
-        System.out.println(objectMapper.readValue(users, new TypeReference<List<User>>(){}));
+//        System.out.println(objectMapper.readValue(users, new TypeReference<List<User>>(){}));
 
 //        System.out.println(accountRepository.findByLogin("admin"));
 
